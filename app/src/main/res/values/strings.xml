@@ -1,0 +1,13 @@
+<resources>
+    <string name="_1m">1M</string>
+    <string name="_1w">1W</string>
+    <string name="_1y">1Y</string>
+    <string name="_3m">3M</string>
+    <string name="_6m">6M</string>
+    <string name="app_name">CoinDemo</string>
+    <string name="change_24hr">% Change 24hr</string>
+    <string name="circulating_supply">Circulating Supply</string>
+    <string name="market_cap">Market Cap</string>
+    <string name="s_price">%s Price</string>
+    <string name="volume_24hr">Volume 24hr</string>
+</resources>
