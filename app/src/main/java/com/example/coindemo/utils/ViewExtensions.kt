@@ -11,7 +11,10 @@ import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.core.content.res.use
 import com.example.coindemo.R
+import com.example.coindemo.utils.FormattingUtil.formatCurrency
+import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
 import com.google.android.material.snackbar.Snackbar
+import kotlin.math.abs
 
 object ViewExtensions {
 
@@ -51,7 +54,8 @@ object ViewExtensions {
             Resources.getSystem().displayMetrics
         )
 
-    fun String.showErrorSnackBar(view: View) = Snackbar.make(view, this, Snackbar.LENGTH_LONG).show()
+    fun String.showErrorSnackBar(view: View) =
+        Snackbar.make(view, this, Snackbar.LENGTH_LONG).show()
 
     fun TextView.setColor(bullish: Boolean) {
         if (bullish) {

@@ -33,16 +33,4 @@ class CoinListRepository @Inject constructor(
     }.flowOn(ioDispatcher)
 
     private fun getCachedData(): Result<List<Coin>> = coinDao.getAll().let { Result.Success(it) }
-
-    suspend fun getMarketChart(id: String, days: Int, interval: String) = flow {
-        val response = getResponse(request = {
-            coinService.getMarketChart(
-                id = id,
-                days = days,
-                interval = interval
-            )
-        })
-        emit(response)
-    }.flowOn(ioDispatcher)
-
 }

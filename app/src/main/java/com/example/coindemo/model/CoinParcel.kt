@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class CoinArgs(
+data class CoinParcel(
     val id: String,
     val name: String,
     val currentPrice: Double,
@@ -12,5 +12,6 @@ data class CoinArgs(
     val totalVolume: Float,
     val circulatingSupply: Double,
     val marketCapChangePercentage24h: Double,
+    val priceChange24h: Double,
     val priceChangePercentage24h: Double,
 ) : Parcelable

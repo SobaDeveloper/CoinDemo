@@ -19,6 +19,6 @@
         android:label="CoinDetailsFragment">
         <argument
             android:name="coin"
-            app:argType="com.example.coindemo.model.CoinArgs" />
+            app:argType="com.example.coindemo.model.CoinParcel" />
     </fragment>
 </navigation>

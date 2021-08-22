@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coindemo.R
 import com.example.coindemo.model.GetMarketChartResponse
-import com.example.coindemo.repository.CoinListRepository
+import com.example.coindemo.repository.CoinDetailsRepository
 import com.example.coindemo.ui.common.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -16,16 +16,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CoinDetailsViewModel @Inject constructor(private val repository: CoinListRepository) :
+class CoinDetailsViewModel @Inject constructor(private val repository: CoinDetailsRepository) :
     ViewModel() {
 
     private val _viewStateLiveData = MutableLiveData<ViewState<GetMarketChartResponse>>()
     val viewStateLiveData: LiveData<ViewState<GetMarketChartResponse>> = _viewStateLiveData
 
+    private var selectedInterval = INTERVAL_HOURLY
+
     fun getMarketPrices(coinId: String, chipId: Int? = null) {
 
         val days = daysMap[chipId] ?: DAYS_7
         val interval = intervalMap[chipId] ?: INTERVAL_HOURLY
+        selectedInterval = interval
 
         viewModelScope.launch {
             repository.getMarketChart(coinId, days, interval)
@@ -36,6 +39,8 @@ class CoinDetailsViewModel @Inject constructor(private val repository: CoinListR
                 }
         }
     }
+
+    fun isHourlyInterval() = selectedInterval == INTERVAL_HOURLY
 
     private val daysMap = mapOf(
         Pair(R.id.chip7, DAYS_7),

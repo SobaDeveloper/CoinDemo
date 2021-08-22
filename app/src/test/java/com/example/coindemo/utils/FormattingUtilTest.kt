@@ -1,7 +1,8 @@
 package com.example.coindemo.utils
 
 import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
-import com.example.coindemo.utils.FormattingUtil.toMonthDay
+import com.example.coindemo.utils.FormattingUtil.toLocalDate
+import com.example.coindemo.utils.FormattingUtil.toLocalDateTime
 import com.example.coindemo.utils.FormattingUtil.withSuffix
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -30,9 +31,16 @@ class FormattingUtilTest {
     }
 
     @Test
-    fun testToMonthDay() {
+    fun testToLocalDate() {
         val input = 1234567890L
-        val expected = "1970-01-14"
-        assertEquals(expected, input.toMonthDay())
+        val expected = "Jan 14, 1970"
+        assertEquals(expected, input.toLocalDate())
+    }
+
+    @Test
+    fun testToLocalDateTime() {
+        val input = 1234567890L
+        val expected = "Jan 14, 10:56 PM"
+        assertEquals(expected, input.toLocalDateTime())
     }
 }

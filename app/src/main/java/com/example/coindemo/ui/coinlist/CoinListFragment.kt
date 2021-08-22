@@ -68,7 +68,7 @@ class CoinListFragment : Fragment(), CoinListAdapter.Listener {
 
     override fun onCoinSelected(coin: Coin) {
         findNavController().navigate(
-            CoinListFragmentDirections.actionCoinListFragmentToCoinDetailsFragment(coin = coin.mapToArgs())
+            CoinListFragmentDirections.actionCoinListFragmentToCoinDetailsFragment(coin = coin.mapToParcel())
         )
     }
 }

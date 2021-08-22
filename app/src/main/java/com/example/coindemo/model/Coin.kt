@@ -38,7 +38,7 @@ data class Coin(
     @SerializedName("total_volume") val totalVolume: Float
 ) : Parcelable {
 
-    fun mapToArgs() = CoinArgs(
+    fun mapToParcel() = CoinParcel(
         id,
         name,
         currentPrice,
@@ -46,6 +46,7 @@ data class Coin(
         totalVolume,
         circulatingSupply,
         marketCapChangePercentage24h,
+        priceChange24h,
         priceChangePercentage24h
     )
 }

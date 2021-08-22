@@ -13,15 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.coindemo.R
 import com.example.coindemo.databinding.FragmentCoinDetailsBinding
-import com.example.coindemo.model.CoinArgs
+import com.example.coindemo.model.CoinParcel
 import com.example.coindemo.ui.common.ViewState
 import com.example.coindemo.utils.FormattingUtil.formatCurrency
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
-import com.example.coindemo.utils.FormattingUtil.toMonthDay
-import com.example.coindemo.utils.ViewExtensions.appendPercentage
+import com.example.coindemo.utils.FormattingUtil.setPriceAndPercentChange
+import com.example.coindemo.utils.FormattingUtil.toLocalDate
+import com.example.coindemo.utils.FormattingUtil.toLocalDateTime
 import com.example.coindemo.utils.ViewExtensions.dp
 import com.example.coindemo.utils.ViewExtensions.invisible
-import com.example.coindemo.utils.ViewExtensions.setColor
 import com.example.coindemo.utils.ViewExtensions.showErrorSnackBar
 import com.example.coindemo.utils.ViewExtensions.visible
 import com.github.mikephil.charting.animation.Easing
@@ -60,9 +59,14 @@ class CoinDetailsFragment : Fragment() {
         setLiveData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun initUi() {
         val coin = args.coin
-        setPrice(coin)
+        setDefaultPrice(coin)
         binding.toolBar.title = coin.name
         binding.marketStatsView.apply {
             setMarketCap(coin.marketCap)
@@ -85,9 +89,13 @@ class CoinDetailsFragment : Fragment() {
         }
 
         binding.lineChart.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                binding.lineChart.highlightValue(null)
-                setPrice(args.coin)
+            when (event.action) {
+                MotionEvent.ACTION_UP -> {
+                    binding.scrollView.enableScrolling = true
+                    binding.lineChart.highlightValue(null)
+                    setDefaultPrice(args.coin)
+                }
+                MotionEvent.ACTION_DOWN -> binding.scrollView.enableScrolling = false
             }
             false
         }
@@ -96,22 +104,12 @@ class CoinDetailsFragment : Fragment() {
     private fun setLiveData() {
         viewModel.viewStateLiveData.observe(viewLifecycleOwner, {
             when (it) {
-                is ViewState.Loading -> { }
+                is ViewState.Loading -> {
+                }
                 is ViewState.Success -> plotChart(it.data.prices)
                 is ViewState.Error -> it.message.showErrorSnackBar(requireView())
             }
         })
-    }
-
-    private fun setPrice(coin: CoinArgs) {
-        binding.tvDate.text = getString(R.string.s_price, coin.name)
-        binding.tvPrice.text = coin.currentPrice.formatCurrency()
-        binding.tvPercentChange.apply {
-            visible()
-            text = coin.priceChangePercentage24h.roundTwoPlaces().appendPercentage()
-            compoundDrawablePadding = 6.dp
-            setColor(coin.priceChangePercentage24h >= 0)
-        }
     }
 
     private fun plotChart(prices: List<List<Float>>) {
@@ -122,9 +120,7 @@ class CoinDetailsFragment : Fragment() {
             data = lineData
             marker = object : MarkerView(requireContext(), R.layout.marker_view) {
                 override fun refreshContent(e: Entry?, highlight: Highlight?) {
-                    binding.tvDate.text = e?.x?.toLong()!!.toMonthDay()
-                    binding.tvPrice.text = e.y.toDouble().formatCurrency()
-                    binding.tvPercentChange.invisible()
+                    setChartPrice(e?.x?.toLong()!!, e.y.toDouble())
                     super.refreshContent(e, highlight)
                 }
 
@@ -138,13 +134,32 @@ class CoinDetailsFragment : Fragment() {
         }
     }
 
+    private fun setDefaultPrice(coin: CoinParcel) {
+        binding.tvDate.text = getString(R.string.s_price, coin.name)
+        binding.tvPrice.text = coin.currentPrice.formatCurrency()
+        binding.tvPriceChange.apply {
+            visible()
+            compoundDrawablePadding = 6.dp
+            setPriceAndPercentChange(coin.priceChange24h, coin.priceChangePercentage24h)
+        }
+    }
+
+    private fun setChartPrice(time: Long, price: Double) {
+        binding.tvDate.text =
+            if (viewModel.isHourlyInterval()) time.toLocalDateTime() else time.toLocalDate()
+        binding.tvPrice.text = price.formatCurrency()
+        binding.tvPriceChange.invisible()
+    }
+
     private fun LineChart.setup() = this.apply {
+        setDrawBorders(false)
+        setDrawGridBackground(false)
         setScaleEnabled(false)
         setTouchEnabled(true)
-        setDrawGridBackground(false)
         description.isEnabled = false
         legend.isEnabled = false
         xAxis.setDrawGridLines(false)
+        xAxis.setDrawAxisLine(false)
         axisRight.isEnabled = false
         axisLeft.isEnabled = false
         animateXY(300, 300, Easing.EaseInSine)
@@ -156,13 +171,13 @@ class CoinDetailsFragment : Fragment() {
 
         val dataSet = LineDataSet(entries, "")
         dataSet.apply {
+            setDrawCircles(false)
             setDrawFilled(true)
             setDrawValues(false)
-            setDrawCircles(false)
-            lineWidth = 2f
             color = ContextCompat.getColor(requireContext(), R.color.white)
-            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
             highLightColor = ContextCompat.getColor(requireContext(), R.color.red)
+            lineWidth = 2f
+            mode = LineDataSet.Mode.HORIZONTAL_BEZIER
         }
         return LineData(dataSet)
     }

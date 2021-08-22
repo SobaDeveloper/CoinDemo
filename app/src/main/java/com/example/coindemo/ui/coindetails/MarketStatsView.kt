@@ -3,15 +3,14 @@ package com.example.coindemo.ui.coindetails
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.example.coindemo.R
 import com.example.coindemo.databinding.ViewMarketStatsBinding
 import com.example.coindemo.utils.FormattingUtil.formatCurrency
 import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
 import com.example.coindemo.utils.FormattingUtil.withSuffix
 import com.example.coindemo.utils.ViewExtensions.appendPercentage
 import com.example.coindemo.utils.ViewExtensions.dp
+import com.example.coindemo.utils.ViewExtensions.setColor
 
 class MarketStatsView @JvmOverloads constructor(
     context: Context,
@@ -45,16 +44,6 @@ class MarketStatsView @JvmOverloads constructor(
             text = percent.roundTwoPlaces().appendPercentage()
             compoundDrawablePadding = 6.dp
             setColor(percent >= 0)
-        }
-    }
-
-    private fun TextView.setColor(bullish: Boolean) {
-        if (bullish) {
-            setTextColor(context.getColor(R.color.green))
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_green, 0)
-        } else {
-            setTextColor(context.getColor(R.color.red))
-            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_arrow_red, 0)
         }
     }
 }
