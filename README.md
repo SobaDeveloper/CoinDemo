@@ -1,5 +1,7 @@
 # CoinDemo
-Demo crypto app demonstrating modern Android practices including MVVM architecture, Kotlin, Coroutines, Flow, Hilt, Retrofit, and Jetpack Libraries.
+Demo cryptocurrency app showcasing modern Android practices including Kotlin, MVVM architecture, Coroutines, Flow, Hilt, Retrofit, and Jetpack Libraries. Data is provided by [CoinGecko API](https://www.coingecko.com/en/api/documentation).
+
+![coindemo](https://user-images.githubusercontent.com/6756987/130348175-0c4cad3a-0996-42e1-92b7-eee660cf8406.gif)
 
 ## Built With
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
@@ -13,7 +15,7 @@ Demo crypto app demonstrating modern Android practices including MVVM architectu
   - [LiveData](https://developer.android.com/topic/libraries/architecture/livedata) - Observable data holder class that is lifecycle-aware.
   - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel) - Stores and manages UI-related data in a lifecycle conscious way.
   - [ViewBinding](https://developer.android.com/topic/libraries/view-binding) - Generates a binding class for each XML layout file present in a module for easy interactions with views.
-- [Dependency Injection](https://developer.android.com/training/dependency-injection) - 
+- [Dependency Injection](https://developer.android.com/training/dependency-injection)
   - [Hilt-Dagger](https://dagger.dev/hilt/) - Standard library to incorporate Dagger dependency injection into an Android application.
   - [Hilt-ViewModel](https://developer.android.com/training/dependency-injection/hilt-jetpack) - DI for injecting `ViewModel`.
 - [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java.
