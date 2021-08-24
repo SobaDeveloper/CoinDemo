@@ -16,8 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="32dp"
-            >
+            android:paddingBottom="32dp">
 
             <TextView
                 android:id="@+id/tvDate"
@@ -57,19 +56,19 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.6" />
 
+            <com.example.coindemo.ui.coindetails.MarketChartView
+                android:id="@+id/marketChartView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toTopOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/tvPriceChange" />
+
             <com.example.coindemo.ui.coindetails.MarketStatsView
                 android:id="@+id/marketStatsView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_material"
                 app:layout_constraintTop_toBottomOf="@+id/chipGroup" />
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline"
-                app:layout_constraintTop_toBottomOf="@id/tvPriceChange" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroup"
@@ -78,7 +77,7 @@
                 app:checkedChip="@+id/chip7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lineChart"
+                app:layout_constraintTop_toBottomOf="@id/marketChartView"
                 app:selectionRequired="true"
                 app:singleSelection="true">
 

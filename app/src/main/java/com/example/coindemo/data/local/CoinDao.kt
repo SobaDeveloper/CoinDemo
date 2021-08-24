@@ -6,7 +6,7 @@ import com.example.coindemo.model.Coin
 @Dao
 interface CoinDao {
 
-    @Query("SELECT * FROM coin")
+    @Query("SELECT * FROM coin ORDER BY marketCapRank ASC")
     fun getAll(): List<Coin>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

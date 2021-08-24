@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.coindemo.databinding.ViewMarketStatsBinding
+import com.example.coindemo.model.CoinParcel
 import com.example.coindemo.utils.FormattingUtil.formatCurrency
 import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
 import com.example.coindemo.utils.FormattingUtil.withSuffix
@@ -27,19 +28,26 @@ class MarketStatsView @JvmOverloads constructor(
         _binding = ViewMarketStatsBinding.inflate(inflater, this)
     }
 
-    fun setMarketCap(marketCap: Double) {
+    fun bind(coin: CoinParcel) {
+        setMarketCap(coin.marketCap)
+        setVolume(coin.totalVolume)
+        setCirculatingSupply(coin.circulatingSupply)
+        setPercentChange24h(coin.marketCapChangePercentage24h)
+    }
+
+    private fun setMarketCap(marketCap: Double) {
         binding.marketCapValue.text = marketCap.formatCurrency(allowDecimals = false)
     }
 
-    fun setVolume(totalVolume: Float) {
+    private fun setVolume(totalVolume: Float) {
         binding.volumeValue.text = totalVolume.formatCurrency(allowDecimals = false)
     }
 
-    fun setCirculatingSupply(supply: Double) {
+    private fun setCirculatingSupply(supply: Double) {
         binding.supplyValue.text = supply.withSuffix()
     }
 
-    fun setPercentChange24h(percent: Double) {
+    private fun setPercentChange24h(percent: Double) {
         binding.percentChangeValue.apply {
             text = percent.roundTwoPlaces().appendPercentage()
             compoundDrawablePadding = 6.dp

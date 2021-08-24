@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import com.example.coindemo.R
 import com.example.coindemo.utils.FormattingUtil.formatCurrency
@@ -41,6 +43,8 @@ object ViewExtensions {
     fun View.invisible() {
         visibility = View.INVISIBLE
     }
+
+    fun Context.color(@ColorRes resId: Int) = ContextCompat.getColor(this, resId)
 
     fun String.appendPercentage() = "$this %"
 

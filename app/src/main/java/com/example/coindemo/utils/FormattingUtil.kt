@@ -52,18 +52,4 @@ object FormattingUtil {
         val formatter = DateTimeFormatter.ofPattern("E, MMM dd, h:mm a")
         return formatter.format(date)
     }
-
-    fun TextView.setPriceAndPercentChange(priceChange: Double, percentChange: Double) {
-        val sb = StringBuilder()
-        if (priceChange >= 0) {
-            sb.append("+ ")
-            setTextColor(context.getColor(R.color.green))
-        } else {
-            sb.append("- ")
-            setTextColor(context.getColor(R.color.red))
-        }
-        sb.append(abs(priceChange).formatCurrency())
-        sb.append(" (${abs(percentChange).roundTwoPlaces().appendPercentage()})")
-        text = sb.toString()
-    }
 }
