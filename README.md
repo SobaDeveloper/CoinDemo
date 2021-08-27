@@ -1,7 +1,7 @@
 # CoinDemo
 Demo cryptocurrency app showcasing modern Android practices including Kotlin, MVVM architecture, Coroutines, Flow, Hilt, Retrofit, and Jetpack Libraries. Data is provided by [CoinGecko API](https://www.coingecko.com/en/api/documentation).
 
-![coindemo](https://user-images.githubusercontent.com/6756987/130348175-0c4cad3a-0996-42e1-92b7-eee660cf8406.gif)
+![Coindemo](https://user-images.githubusercontent.com/6756987/131074249-c506bbac-d486-4839-9cfe-42e00ff19298.gif)
 
 ## Built With
 - [Kotlin](https://kotlinlang.org/) - First class and official programming language for Android development.
