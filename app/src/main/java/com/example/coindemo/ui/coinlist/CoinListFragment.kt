@@ -41,6 +41,12 @@ class CoinListFragment : Fragment(), CoinListAdapter.Listener {
         setListeners()
     }
 
+    override fun onDestroyView() {
+        binding.recyclerView.adapter = null
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun initUi() {
         binding.recyclerView.apply {
             adapter = coinListAdapter

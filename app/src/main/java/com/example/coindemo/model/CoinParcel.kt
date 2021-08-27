@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class CoinParcel(
     val id: String,
     val name: String,
+    val imageUrl: String,
     val currentPrice: Double,
     val marketCap: Double,
     val totalVolume: Float,

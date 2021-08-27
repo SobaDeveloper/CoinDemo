@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
 import android.widget.TextView
@@ -13,10 +14,7 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import com.example.coindemo.R
-import com.example.coindemo.utils.FormattingUtil.formatCurrency
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
 import com.google.android.material.snackbar.Snackbar
-import kotlin.math.abs
 
 object ViewExtensions {
 
@@ -51,12 +49,8 @@ object ViewExtensions {
     val Int.dp
         get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
-    val Int.dpToFloat: Float
-        get() = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            Resources.getSystem().displayMetrics
-        )
+    fun Float.dp(displayMetrics: DisplayMetrics) =
+        TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, this, displayMetrics)
 
     fun String.showErrorSnackBar(view: View) =
         Snackbar.make(view, this, Snackbar.LENGTH_LONG).show()

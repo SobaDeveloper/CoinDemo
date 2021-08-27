@@ -41,6 +41,7 @@ data class Coin(
     fun mapToParcel() = CoinParcel(
         id,
         name,
+        imageUrl,
         currentPrice,
         marketCap,
         totalVolume,

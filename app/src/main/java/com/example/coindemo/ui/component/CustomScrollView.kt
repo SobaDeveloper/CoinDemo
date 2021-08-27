@@ -1,4 +1,4 @@
-package com.example.coindemo.utils
+package com.example.coindemo.ui.component
 
 import android.annotation.SuppressLint
 import android.content.Context

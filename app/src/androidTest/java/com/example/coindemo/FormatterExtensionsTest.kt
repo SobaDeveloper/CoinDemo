@@ -1,11 +1,11 @@
 package com.example.coindemo
 
-import com.example.coindemo.utils.FormattingUtil.formatCurrency
+import com.example.coindemo.utils.FormatterExtensions.formatCurrency
 import org.junit.Assert.*
 
 import org.junit.Test
 
-class FormattingUtilTest {
+class FormatterExtensionsTest {
 
     @Test
     fun formatCurrency() {

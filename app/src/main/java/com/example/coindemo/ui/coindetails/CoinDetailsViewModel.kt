@@ -22,7 +22,11 @@ class CoinDetailsViewModel @Inject constructor(private val repository: CoinDetai
     private val _viewStateLiveData = MutableLiveData<ViewState<GetMarketChartResponse>>()
     val viewStateLiveData: LiveData<ViewState<GetMarketChartResponse>> = _viewStateLiveData
 
+    private val _labelValuesLiveData = MutableLiveData<List<Float>>()
+    val labelValuesLiveData: LiveData<List<Float>> = _labelValuesLiveData
+
     private var selectedInterval = INTERVAL_HOURLY
+    var coinColor: Int? = null
 
     fun getMarketPrices(coinId: String, chipId: Int? = null) {
 
@@ -40,7 +44,7 @@ class CoinDetailsViewModel @Inject constructor(private val repository: CoinDetai
         }
     }
 
-    fun isHourlyInterval() = selectedInterval == INTERVAL_HOURLY
+    fun isIntervalHourly() = selectedInterval == INTERVAL_HOURLY
 
     private val daysMap = mapOf(
         Pair(R.id.chip7, DAYS_7),

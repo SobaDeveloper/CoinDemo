@@ -7,6 +7,7 @@
     <string name="app_name">CoinDemo</string>
     <string name="change_24hr">% Change 24hr</string>
     <string name="circulating_supply">Circulating Supply</string>
+    <string name="loading_data">Loading data...</string>
     <string name="market_cap">Market Cap</string>
     <string name="s_price">%s Price</string>
     <string name="volume_24hr">Volume 24hr</string>

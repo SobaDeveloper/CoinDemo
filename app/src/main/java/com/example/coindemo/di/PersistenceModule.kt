@@ -22,5 +22,5 @@ class PersistenceModule {
 
     @Provides
     @Singleton
-    fun provideUserDao(appDatabase: AppDatabase) = appDatabase.coinDao()
+    fun provideCoinDao(appDatabase: AppDatabase) = appDatabase.coinDao()
 }

@@ -9,8 +9,8 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.coindemo.databinding.RowCoinListBinding
 import com.example.coindemo.model.Coin
-import com.example.coindemo.utils.FormattingUtil.formatCurrency
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
+import com.example.coindemo.utils.FormatterExtensions.formatCurrency
+import com.example.coindemo.utils.FormatterExtensions.roundTwoPlaces
 import com.example.coindemo.utils.ViewExtensions.appendPercentage
 import com.example.coindemo.utils.ViewExtensions.dp
 import com.example.coindemo.utils.ViewExtensions.setColor

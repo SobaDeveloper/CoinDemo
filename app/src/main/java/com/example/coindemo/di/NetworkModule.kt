@@ -41,7 +41,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCryptoService(retrofit: Retrofit) = retrofit.create(CoinService::class.java)
+    fun provideCoinService(retrofit: Retrofit) = retrofit.create(CoinService::class.java)
 
     @Provides
     @Singleton

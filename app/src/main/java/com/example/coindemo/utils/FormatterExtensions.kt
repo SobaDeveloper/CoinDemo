@@ -1,21 +1,14 @@
 package com.example.coindemo.utils
 
-import android.widget.TextView
-import com.example.coindemo.R
-import com.example.coindemo.utils.FormattingUtil.formatCurrency
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
-import com.example.coindemo.utils.ViewExtensions.appendPercentage
 import java.text.NumberFormat
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.abs
 import kotlin.math.ln
 import kotlin.math.pow
 
-object FormattingUtil {
+object FormatterExtensions {
 
     fun Double.formatCurrency(currencyCode: String = "USD", allowDecimals: Boolean = true): String =
         NumberFormat.getCurrencyInstance()
@@ -39,6 +32,12 @@ object FormattingUtil {
         return String.format(
             "%.3f %c", this / 1000.00.pow(exp.toDouble()), "KMBTPE"[exp - 1]
         )
+    }
+
+    fun Long.toMonthDay(): String {
+        val date = Instant.ofEpochMilli(this).atZone(ZoneId.systemDefault()).toLocalDate()
+        val formatter = DateTimeFormatter.ofPattern("M/d")
+        return formatter.format(date)
     }
 
     fun Long.toLocalDate(): String {

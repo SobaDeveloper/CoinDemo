@@ -4,25 +4,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.coindemo.R
 import com.example.coindemo.databinding.FragmentCoinDetailsBinding
+import com.example.coindemo.ui.coindetails.CoinDetailsExtensions.setDateLabels
+import com.example.coindemo.ui.coindetails.CoinDetailsExtensions.setPriceAndPercentChange
 import com.example.coindemo.ui.common.ViewState
-import com.example.coindemo.utils.FormattingUtil.formatCurrency
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
-import com.example.coindemo.utils.FormattingUtil.toLocalDate
-import com.example.coindemo.utils.FormattingUtil.toLocalDateTime
-import com.example.coindemo.utils.ViewExtensions.appendPercentage
+import com.example.coindemo.ui.component.MarketChartView
+import com.example.coindemo.utils.AnimationUtil.crossFadeTo
+import com.example.coindemo.utils.FormatterExtensions.formatCurrency
+import com.example.coindemo.utils.FormatterExtensions.toLocalDate
+import com.example.coindemo.utils.FormatterExtensions.toLocalDateTime
+import com.example.coindemo.utils.PaletteUtil
+import com.example.coindemo.utils.ViewExtensions.color
 import com.example.coindemo.utils.ViewExtensions.dp
 import com.example.coindemo.utils.ViewExtensions.invisible
 import com.example.coindemo.utils.ViewExtensions.showErrorSnackBar
 import com.example.coindemo.utils.ViewExtensions.visible
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.math.abs
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
@@ -56,15 +60,18 @@ class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
     }
 
     private fun initUi() {
-        val coin = args.coin
-        setDefaultPrice()
-        binding.toolBar.title = coin.name
+        args.coin.apply {
+            setCoinColor(this.imageUrl)
+            binding.toolBar.title = this.name
+            binding.marketStatsView.bind(this)
+            viewModel.getMarketPrices(this.id)
+        }
+        setCurrentPrice()
+
         binding.marketChartView.apply {
             setOnTouchListener(binding.scrollView)
             listener = this@CoinDetailsFragment
         }
-        binding.marketStatsView.bind(coin)
-        viewModel.getMarketPrices(coin.id)
     }
 
     private fun setListeners() {
@@ -82,13 +89,16 @@ class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
             when (it) {
                 is ViewState.Loading -> {
                 }
-                is ViewState.Success -> binding.marketChartView.plotChart(it.data.prices)
+                is ViewState.Success -> {
+                    binding.marketChartView.plotChart(it.data.prices, viewModel.coinColor)
+                    binding.labelContainer.setDateLabels(it.data.prices)
+                }
                 is ViewState.Error -> it.message.showErrorSnackBar(requireView())
             }
         })
     }
 
-    override fun setDefaultPrice() {
+    override fun setCurrentPrice() {
         val coin = args.coin
         binding.tvDate.text = getString(R.string.s_price, coin.name)
         binding.tvPrice.text = coin.currentPrice.formatCurrency()
@@ -101,22 +111,20 @@ class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
 
     override fun setChartPrice(time: Long, price: Double) {
         binding.tvDate.text =
-            if (viewModel.isHourlyInterval()) time.toLocalDateTime() else time.toLocalDate()
+            if (viewModel.isIntervalHourly()) time.toLocalDateTime() else time.toLocalDate()
         binding.tvPrice.text = price.formatCurrency()
         binding.tvPriceChange.invisible()
     }
 
-    private fun TextView.setPriceAndPercentChange(priceChange: Double, percentChange: Double) {
-        val sb = StringBuilder()
-        if (priceChange >= 0) {
-            sb.append("+ ")
-            setTextColor(context.getColor(R.color.green))
-        } else {
-            sb.append("- ")
-            setTextColor(context.getColor(R.color.red))
+    override fun onChartActionDown() = binding.chipGroup.crossFadeTo(binding.labelContainer)
+
+    override fun onChartActionUp() = binding.labelContainer.crossFadeTo(binding.chipGroup)
+    
+    private fun setCoinColor(imageUrl: String) {
+        lifecycleScope.launch {
+            val color = PaletteUtil.getPaletteColor(requireContext(), imageUrl)
+                ?: requireContext().color(R.color.white)
+            viewModel.coinColor = color
         }
-        sb.append(abs(priceChange).formatCurrency())
-        sb.append(" (${abs(percentChange).roundTwoPlaces().appendPercentage()})")
-        text = sb.toString()
     }
 }

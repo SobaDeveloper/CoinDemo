@@ -1,13 +1,14 @@
 package com.example.coindemo.utils
 
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
-import com.example.coindemo.utils.FormattingUtil.toLocalDate
-import com.example.coindemo.utils.FormattingUtil.toLocalDateTime
-import com.example.coindemo.utils.FormattingUtil.withSuffix
+import com.example.coindemo.utils.FormatterExtensions.roundTwoPlaces
+import com.example.coindemo.utils.FormatterExtensions.toLocalDate
+import com.example.coindemo.utils.FormatterExtensions.toLocalDateTime
+import com.example.coindemo.utils.FormatterExtensions.toMonthDay
+import com.example.coindemo.utils.FormatterExtensions.withSuffix
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class FormattingUtilTest {
+class FormatterExtensionsTest {
 
     @Test
     fun testRoundTwoPlaces() {
@@ -28,6 +29,13 @@ class FormattingUtilTest {
         val input = 1234567890.12
         val expected = "1.235 B"
         assertEquals(expected, input.withSuffix())
+    }
+
+    @Test
+    fun testToMonthDay() {
+        val input = 1234567890L
+        val expected = "1/14"
+        assertEquals(expected, input.toMonthDay())
     }
 
     @Test

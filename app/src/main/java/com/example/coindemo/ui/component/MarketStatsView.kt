@@ -1,4 +1,4 @@
-package com.example.coindemo.ui.coindetails
+package com.example.coindemo.ui.component
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,9 +6,9 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.coindemo.databinding.ViewMarketStatsBinding
 import com.example.coindemo.model.CoinParcel
-import com.example.coindemo.utils.FormattingUtil.formatCurrency
-import com.example.coindemo.utils.FormattingUtil.roundTwoPlaces
-import com.example.coindemo.utils.FormattingUtil.withSuffix
+import com.example.coindemo.utils.FormatterExtensions.formatCurrency
+import com.example.coindemo.utils.FormatterExtensions.roundTwoPlaces
+import com.example.coindemo.utils.FormatterExtensions.withSuffix
 import com.example.coindemo.utils.ViewExtensions.appendPercentage
 import com.example.coindemo.utils.ViewExtensions.dp
 import com.example.coindemo.utils.ViewExtensions.setColor
