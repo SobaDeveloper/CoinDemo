@@ -16,24 +16,27 @@ import com.example.coindemo.utils.ViewExtensions.dp
 import com.example.coindemo.utils.ViewExtensions.setColor
 import java.util.*
 
-class CoinListAdapter(private val listener: Listener? = null) :
+typealias OnCoinSelected = ((Coin) -> Unit)
+
+class CoinListAdapter(private val onCoinSelected: OnCoinSelected) :
     ListAdapter<Coin, CoinListAdapter.CoinListViewHolder>(CoinListDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinListViewHolder =
-        CoinListViewHolder.from(listener, parent)
+        CoinListViewHolder.from(onCoinSelected, parent)
 
     override fun onBindViewHolder(holder: CoinListViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
     class CoinListViewHolder(
-        private val listener: Listener?,
+        private val onCoinSelected: OnCoinSelected,
         private val binding: RowCoinListBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(coin: Coin) {
-            itemView.setOnClickListener { listener?.onCoinSelected(coin) }
+            itemView.setOnClickListener {
+                onCoinSelected(coin) }
 
             binding.coinAvatar.load(coin.imageUrl) {
                 crossfade(true)
@@ -50,11 +53,11 @@ class CoinListAdapter(private val listener: Listener? = null) :
         }
 
         companion object {
-            fun from(listener: Listener?, parent: ViewGroup): CoinListViewHolder {
+            fun from(onCoinSelected: OnCoinSelected, parent: ViewGroup): CoinListViewHolder {
                 val binding = RowCoinListBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
-                return CoinListViewHolder(listener, binding)
+                return CoinListViewHolder(onCoinSelected, binding)
             }
         }
     }
@@ -65,9 +68,5 @@ class CoinListAdapter(private val listener: Listener? = null) :
 
         override fun areContentsTheSame(oldItem: Coin, newItem: Coin): Boolean =
             oldItem == newItem
-    }
-
-    interface Listener {
-        fun onCoinSelected(coin: Coin)
     }
 }

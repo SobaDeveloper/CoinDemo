@@ -85,7 +85,7 @@ class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
     }
 
     private fun setLiveData() {
-        viewModel.viewStateLiveData.observe(viewLifecycleOwner, {
+        viewModel.viewStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> {
                 }
@@ -95,7 +95,7 @@ class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
                 }
                 is ViewState.Error -> it.message.showErrorSnackBar(requireView())
             }
-        })
+        }
     }
 
     override fun setCurrentPrice() {
@@ -119,7 +119,7 @@ class CoinDetailsFragment : Fragment(), MarketChartView.Listener {
     override fun onChartActionDown() = binding.chipGroup.crossFadeTo(binding.labelContainer)
 
     override fun onChartActionUp() = binding.labelContainer.crossFadeTo(binding.chipGroup)
-    
+
     private fun setCoinColor(imageUrl: String) {
         lifecycleScope.launch {
             val color = PaletteUtil.getPaletteColor(requireContext(), imageUrl)

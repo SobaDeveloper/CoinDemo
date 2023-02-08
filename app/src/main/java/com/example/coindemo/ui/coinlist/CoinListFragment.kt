@@ -16,13 +16,13 @@ import com.example.coindemo.utils.ViewExtensions.showErrorSnackBar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CoinListFragment : Fragment(), CoinListAdapter.Listener {
+class CoinListFragment : Fragment() {
 
     private var _binding: FragmentCoinListBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: CoinListViewModel by viewModels()
-    private val coinListAdapter = CoinListAdapter(this)
+    private val coinListAdapter = CoinListAdapter(::onCoinSelected)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +56,7 @@ class CoinListFragment : Fragment(), CoinListAdapter.Listener {
     }
 
     private fun setLiveData() {
-        viewModel.viewStateLiveData.observe(viewLifecycleOwner, {
+        viewModel.viewStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> binding.swipeRefreshLayout.isRefreshing = true
                 is ViewState.Success -> {
@@ -65,16 +65,15 @@ class CoinListFragment : Fragment(), CoinListAdapter.Listener {
                 }
                 is ViewState.Error -> it.message.showErrorSnackBar(requireView())
             }
-        })
+        }
     }
 
     private fun setListeners() {
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.getCoins() }
     }
 
-    override fun onCoinSelected(coin: Coin) {
+    private fun onCoinSelected(coin: Coin) =
         findNavController().navigate(
             CoinListFragmentDirections.actionCoinListFragmentToCoinDetailsFragment(coin = coin.mapToParcel())
         )
-    }
 }

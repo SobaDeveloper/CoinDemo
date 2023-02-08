@@ -27,7 +27,8 @@ object AnimationUtil {
             animate().alpha(0f)
                 .setDuration(resources.getInteger(android.R.integer.config_mediumAnimTime).toLong())
                 .setListener(object: AnimatorListenerAdapter(){
-                    override fun onAnimationEnd(animation: Animator?, isReverse: Boolean) {
+                    override fun onAnimationEnd(animation: Animator) {
+                        super.onAnimationEnd(animation)
                         gone()
                     }
                 })
